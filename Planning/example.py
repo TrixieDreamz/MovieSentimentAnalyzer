@@ -2,7 +2,7 @@ import requests
 
 
 
-API_KEY = "7846494379f98ef688493ebd4f0ee964"
+
 
 def search_movie(movie_name):
     url = f"https://api.themoviedb.org/3/search/movie?query={movie_name}&api_key={API_KEY}"
