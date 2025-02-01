@@ -68,6 +68,7 @@ class RegisterView(View):
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON format"}, status=400)
 
+@csrf_exempt
 def get_user(request):
     print("get_user() called")  # Debugging
     if request.user.is_authenticated:

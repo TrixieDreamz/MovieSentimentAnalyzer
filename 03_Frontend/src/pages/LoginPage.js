@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
-    const [email, setEmail] = useState("");  // 🔹 State for email
-    const [password, setPassword] = useState("");  // 🔹 State for password
+const LoginPage = ({ setUser }) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async (event) => {
         event.preventDefault();
         console.log("🚀 Login button clicked!");
-
-        console.log("📌 Email:", email);
-        console.log("📌 Password:", password);
 
         try {
             const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
@@ -19,17 +17,13 @@ const LoginPage = () => {
                 body: JSON.stringify({ email, password }),
             });
 
-            // 🔹 Check if the response is JSON before parsing
-            const contentType = response.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                throw new Error("❌ Response is not JSON! Check the backend URL.");
-            }
-
             const data = await response.json();
             console.log("✅ Response:", data);
 
             if (response.ok) {
-                alert("Login Successful: " + data.username);
+                localStorage.setItem("user", JSON.stringify(data));  // 🔹 Store user persistently
+                setUser(data);  // 🔹 Update state
+                navigate("/");  // 🔹 Redirect to home page
             } else {
                 alert("Error: " + data.error);
             }
@@ -46,14 +40,14 @@ const LoginPage = () => {
                     type="email"
                     placeholder="Email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}  // 🔹 Update state
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}  // 🔹 Update state
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                 />
                 <button type="submit">Login</button>
@@ -63,4 +57,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
