@@ -12,7 +12,7 @@ const API = axios.create({
 export const fetchMovies = async () => {
     try {
         const response = await API.get("/movies/");
-        console.log("Movies fetched:", response.data);  // ✅ Log response
+        console.log("Movies fetched:", response.data);
         return response.data;
     } catch (error) {
         console.error("Error fetching movies:", error);
@@ -20,15 +20,25 @@ export const fetchMovies = async () => {
     }
 };
 
-
-
 // Fetch all reviews
 export const fetchReviews = async () => {
     try {
-        const reponse = await API.get("/reviews/");
+        const response = await API.get("/reviews/");  
         return response.data;
     } catch (error) {
         console.error("Error fetching reviews:", error);
         return [];
     }
-}
+};
+
+// Fetch a movie from Django (which calls TMDb)
+export const searchMovie = async (movieTitle) => {
+    try {
+        const response = await API.get(`/external/movies/${movieTitle}/`);
+        console.log("Movie fetched:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching movie:", error);
+        return null;
+    }
+};

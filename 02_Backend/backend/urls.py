@@ -20,5 +20,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('sentiment_analysis.urls')),  # 👈 Include API routes
+    path("api/users/", include("users.urls")),
 ]
 
