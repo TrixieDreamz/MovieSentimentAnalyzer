@@ -1,53 +1,75 @@
-from rest_framework.response import Response
-from rest_framework import generics, status
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import get_user_model  # ✅ Import correctly
-from django.contrib.auth import authenticate
-from .serializers import UserSerializer
-from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAuthenticated
-from .serializers import LoginSerializer  # Import the serializer
-from.serializers import LogoutSerializer
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.http import JsonResponse
+from django.views import View
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
+User = get_user_model()
 
-User = get_user_model()  # ✅ This ensures Django uses the custom User model
-
-# User Registration (Sign-up)
-class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    permission_classes = (AllowAny,)
-    serializer_class = UserSerializer
-
-# User Login (Token Authentication)
-class LoginView(generics.GenericAPIView):
-    permission_classes = (AllowAny,)
-    serializer_class = LoginSerializer  # 👈 Add this line
-
-    def post(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        
-        user = serializer.validated_data
-        refresh = RefreshToken.for_user(user)
-
-        return Response({
-            "refresh": str(refresh),
-            "access": str(refresh.access_token),
-        })
-
-# User Logout (Blacklist Tokens)
-class LogoutView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
-
+@method_decorator(csrf_exempt, name='dispatch')
+class LoginView(View):
     def post(self, request):
         try:
-            refresh_token = request.data.get("refresh")
-            if not refresh_token:
-                return Response({"error": "Refresh token is required"}, status=status.HTTP_400_BAD_REQUEST)
+            data = json.loads(request.body)
+            email = data.get("email").strip().lower()  # Convert to lowercase
+            password = data.get("password")
 
-            token = RefreshToken(refresh_token)
-            token.blacklist()
+            print(f"🔍 Received login request for email: {email}")  # Debugging
 
-            return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            # Find the user (case-insensitive)
+            user = User.objects.filter(email__iexact=email).first()
+            if user:
+                print(f"✅ Found user: {user.username}")  # Debugging
+                print(f"🔑 Checking password for user {user.username}")  # Debugging
+
+                if user.check_password(password):
+                    print("✅ Password is correct!")  # Debugging
+                else:
+                    print("❌ Password is incorrect!")  # Debugging
+
+                user = authenticate(request, username=user.username, password=password)
+
+                if user:
+                    print(f"✅ Authentication successful for {user.username}")  # Debugging
+                    login(request, user)
+                    return JsonResponse({"username": user.username})
+
+                print("❌ Authentication failed!")  # Debugging
+
+            return JsonResponse({"error": "Invalid credentials"}, status=400)
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON format"}, status=400)
+
+
+class LogoutView(View):
+    def post(self, request):
+        logout(request)
+        return JsonResponse({"message": "Logged out successfully"})
+    
+class RegisterView(View):
+    def post(self, request):
+        try:
+            data = json.loads(request.body)  # Parse JSON from frontend
+            username = data.get("username")
+            email = data.get("email")
+            password = data.get("password")
+
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({"error": "Username already exists"}, status=400)
+
+            if User.objects.filter(email=email).exists():
+                return JsonResponse({"error": "Email already in use"}, status=400)
+
+            user = User.objects.create_user(username=username, email=email, password=password)
+            return JsonResponse({"message": "User registered successfully", "username": user.username})
+        
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON format"}, status=400)
+
+def get_user(request):
+    print("get_user() called")  # Debugging
+    if request.user.is_authenticated:
+        return JsonResponse({"username": request.user.username})
+    return JsonResponse({"error": "Not authenticated"}, status=401)
