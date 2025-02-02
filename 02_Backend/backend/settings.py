@@ -10,67 +10,79 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
+from pathlib import Path  # Path module helps manage file paths in a cleaner way.
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+# This defines the base directory of the project.
+BASE_DIR = Path(__file__).resolve().parent.parent  
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: Keep the secret key used in production secret!
+# This key is used to provide cryptographic signing, such as password hashing.
 SECRET_KEY = 'django-insecure-h9c4my*$r$g#t$2-k0n7n%xv7&py(37b%w%(tw5w7_le80i@6#'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# SECURITY WARNING: Don't run with debug turned on in production!
+# DEBUG mode should be True in development but must be False in production.
+DEBUG = True  
 
+# ALLOWED_HOSTS defines what domains/IPs can serve the Django app.
+# Added: "127.0.0.1" and "localhost" to allow local development.
+# Added: "testserver" for running Django test cases.
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "testserver"]
 
+# Custom User Model
+# Added: This sets a custom user model instead of the default Django user model.
 AUTH_USER_MODEL = 'users.User'
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',  
-    'sentiment_analysis',
-    'users',
-    'corsheaders'
+    # Default Django apps:
+    'django.contrib.admin',       # Admin interface
+    'django.contrib.auth',        # Authentication system
+    'django.contrib.contenttypes',# Content types framework
+    'django.contrib.sessions',    # Session management
+    'django.contrib.messages',    # Messaging framework
+    'django.contrib.staticfiles', # Static files handling
+
+    # Third-party apps:
+    'rest_framework',  # Added: Enables Django REST Framework for API functionality
+    'rest_framework_simplejwt',  # Added: Implements JWT authentication
+    'rest_framework_simplejwt.token_blacklist',  # Added: Allows JWT token blacklisting
+    'corsheaders',  # Added: Enables Cross-Origin Resource Sharing (CORS) for frontend-backend communication
+
+    # Custom apps:
+    'sentiment_analysis',  # Added: Your custom app for analyzing movie sentiment
+    'users',  # Added: Your custom app for handling users
 ]
 
-
+# Middleware (Processes requests before reaching the view)
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',  # Helps with security settings (e.g., HTTP Strict Transport Security)
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Manages user sessions
+    'django.middleware.common.CommonMiddleware',  # Provides common middleware (e.g., handling URL normalization)
+    'django.middleware.csrf.CsrfViewMiddleware',  # Protects against Cross-Site Request Forgery (CSRF) attacks
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # Handles authentication system
+    'django.contrib.messages.middleware.MessageMiddleware',  # Enables flash messages
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Protects against clickjacking attacks
+    
+    # Added: Middleware for handling CORS requests (Allows frontend and backend to communicate)
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.security.SecurityMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
-    "django.middleware.csrf.CsrfViewMiddleware",
 ]
 
+# ROOT_URLCONF points to the project's URL configuration file
 ROOT_URLCONF = 'backend.urls'
 
+# Templating system configuration
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',  # Django's default template engine
+        'DIRS': [],  # Can add template directories here
+        'APP_DIRS': True,  # Enables searching for templates inside installed apps
         'OPTIONS': {
-            'context_processors': [
+            'context_processors': [  # Context processors add variables to template rendering
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -80,73 +92,65 @@ TEMPLATES = [
     },
 ]
 
+# WSGI application entry point (Used for deployment)
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# Database configuration
+# Default database is SQLite (which is lightweight and good for development)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',  # Database engine
+        'NAME': BASE_DIR / 'db.sqlite3',  # Database file location
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
+# Password validation (Used to enforce strong passwords)
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# Internationalization settings
+LANGUAGE_CODE = 'en-us'  # Default language for the app
+TIME_ZONE = 'UTC'  # Default timezone
+USE_I18N = True  # Enables Django’s internationalization framework
+USE_TZ = True  # Enables time zone support
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
+# Static files configuration (CSS, JavaScript, Images)
+STATIC_URL = 'static/'  # Defines the base URL for static files
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
+# Default primary key field type for models
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# CORS settings
+# Added: Allows only localhost:3000 (React frontend) to make API requests
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Allow React frontend
+    "http://localhost:3000",  
 ]
 
-# TEMPORARY: Allow all origins for debugging (Remove this in production)
+# Added: Temporarily allowing all origins (Should be removed in production)
 CORS_ALLOW_ALL_ORIGINS = True  
-CORS_ALLOW_CREDENTIALS = True  # Allow authentication if needed
+CORS_ALLOW_CREDENTIALS = True  # Allows frontend to send authentication credentials
 
+# Django REST Framework settings
+# Added: Configures JWT authentication as default authentication method
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",  # Added: Uses JWT for API authentication
+        "rest_framework.authentication.SessionAuthentication",  # Allows session-based authentication
     )
 }
+
+# Email Configuration (For sending emails via Google SMTP)
+# Added: Enables email functionality using a Gmail account
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"  # Specifies that emails should be sent via SMTP
+EMAIL_HOST = "smtp.gmail.com"  # Gmail SMTP server
+EMAIL_PORT = 587  # Port for TLS encryption
+EMAIL_USE_TLS = True  # Enables TLS encryption
+EMAIL_HOST_USER = "trundlebrandon578@gmail.com"  # Your Gmail address
+EMAIL_HOST_PASSWORD = "wmhv fqkn vmhu hynj"  # Gmail app password (Should be stored in an .env file!)
+DEFAULT_FROM_EMAIL = "no-reply@moviesentimentapp.com"  # Default sender for emails
 

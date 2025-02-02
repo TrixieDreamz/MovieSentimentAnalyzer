@@ -1,36 +1,42 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignupPage = ({ setUser }) => {
-    const [email, setEmail] = useState("");
+const SignupPage = () => {
     const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const handleSignup = async (event) => {
         event.preventDefault();
+        setError(null); // Clear previous errors
+
         try {
-            const response = await fetch("/api/signup", {
+            const response = await fetch("http://127.0.0.1:8000/api/users/register/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, username, password }),
+                body: JSON.stringify({ username, email, password }),
             });
 
+            const data = await response.json();
+
             if (response.ok) {
-                const userData = await response.json();
-                setUser(userData); // Set logged-in user
-                navigate("/"); // Redirect to home
+                alert("Signup successful! You can now log in.");
+                navigate("/login"); // Redirect to login page
             } else {
-                alert("Signup failed");
+                setError(data.error); // Show error if registration fails
             }
         } catch (error) {
             console.error("Signup error:", error);
+            setError("An unexpected error occurred.");
         }
     };
 
     return (
-        <div style={{ padding: "20px", textAlign: "center" }}>
+        <div>
             <h2>Sign Up</h2>
+            {error && <p style={{ color: "red" }}>{error}</p>}
             <form onSubmit={handleSignup}>
                 <input
                     type="text"

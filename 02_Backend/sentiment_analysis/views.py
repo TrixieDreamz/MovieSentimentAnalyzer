@@ -7,9 +7,7 @@ from ApiKey import TMDb_API_KEY
 
 
 # 🎬 Movie API Views
-class MovieListCreateView(generics.ListCreateAPIView):
-    queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
+
 
 class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Movie.objects.all()
