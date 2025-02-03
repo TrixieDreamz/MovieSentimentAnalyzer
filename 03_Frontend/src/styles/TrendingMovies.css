@@ -1,0 +1,76 @@
+/* Trending Movie Sentiment Section */
+.trending-section {
+    background-color: white;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.trending-section h2 {
+    font-size: 3rem;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
+    color: #b71c1c;
+    margin-bottom: 40px;
+}
+
+/* Movie Cards */
+.movies-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.movie-card {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 220px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Movie Poster */
+.movie-poster {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Sentiment Tags */
+.sentiment-tag {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Different Sentiment Colors */
+.positive {
+    background-color: #4caf50;
+    color: white;
+}
+
+.very positive {
+    background-color: #2e7d32;
+    color: white;
+}
+
+.mixed {
+    background-color: #ff9800;
+    color: white;
+}
+
+.negative {
+    background-color: #e53935;
+    color: white;
+}

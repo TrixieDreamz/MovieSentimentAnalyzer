@@ -1,0 +1,40 @@
+/* Problem Section */
+.problem-section {
+    position: relative;
+    width: 100vw;
+    height: 60vh; /* Smaller than hero section */
+    background-image: url("../assets/ConfusedCouple.png");
+    background-size: cover;
+    background-position: center top;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+/* Dark Overlay for Readability */
+.problem-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
+}
+
+/* Problem Content */
+.problem-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+}
+
+.problem-content h2 {
+    font-size: 2.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.problem-content p {
+    font-size: 1.25rem;
+    font-family: 'Montserrat', sans-serif;
+}

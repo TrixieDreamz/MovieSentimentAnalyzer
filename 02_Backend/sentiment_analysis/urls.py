@@ -1,13 +1,13 @@
 from django.urls import path
 from .views import (
-    MovieListCreateView, MovieDetailView,
+    MovieDetailView,
     ReviewListCreateView, ReviewDetailView,
     SentimentAnalysisListCreateView, SentimentAnalysisDetailView, fetch_movie_data
 )
 
 urlpatterns = [
     # 🎬 Movie Endpoints
-    path('movies/', MovieListCreateView.as_view(), name='movie-list'),
+    path('movies/', MovieDetailView.as_view(), name='movie-list'),
     path('movies/<uuid:pk>/', MovieDetailView.as_view(), name='movie-detail'),
 
     # 📝 Review Endpoints

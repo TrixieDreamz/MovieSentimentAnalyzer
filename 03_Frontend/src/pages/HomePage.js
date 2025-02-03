@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import HeroSection from "../sections/HeroSection";
+import WhyCinePulse from "../sections/WhyCinePulse";
+import TrendingMovies from "../sections/TrendingMovies";
+import ProblemSection from "../sections/ProblemSection"; 
+import SolutionSection from "../sections/SolutionSection"; 
 
-const HomePage = ({ user }) => {
-    const [currentUser, setCurrentUser] = useState(user);
-
-    useEffect(() => {
-        setCurrentUser(user);
-    }, [user]); // 🔹 Update when user changes
-
+const HomePage = () => {
     return (
-        <div style={{ padding: "20px", textAlign: "center" }}>
-            <h1>Welcome to Movie Sentiment App</h1>
-            <p>Analyze movie reviews and discover trends.</p>
-
-            {/* Show Welcome Message if User is Logged In */}
-            {currentUser ? (
-                <h2>Hello, {currentUser.username}!</h2>
-            ) : (
-                <p>
-                    Please <a href="/login">log in</a> or <a href="/signup">sign up</a> to continue.
-                </p>
-            )}
+        <div className="main-content">
+            <HeroSection />
+            <WhyCinePulse />
+            <TrendingMovies />
+            <ProblemSection /> 
+            <SolutionSection /> 
         </div>
     );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./sections/Navbar"; // Import the Navbar component
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import LoginPage from "./pages/LoginPage";
@@ -18,7 +19,7 @@ const App = () => {
                     method: "GET",
                     credentials: "include",  // 🔹 Send session cookies
                 });
-    
+
                 if (response.ok) {
                     const data = await response.json();
                     setUser(data);
@@ -31,7 +32,7 @@ const App = () => {
                 console.error("Error fetching user:", error);
             }
         };
-    
+
         fetchUser();
     }, []);
 
@@ -48,24 +49,8 @@ const App = () => {
 
     return (
         <Router>
-            {/* Navigation Bar */}
-            <nav style={{ padding: "10px", textAlign: "center", borderBottom: "1px solid #ccc" }}>
-                <Link to="/" style={{ margin: "10px" }}>Home</Link>
-                <Link to="/search" style={{ margin: "10px" }}>Search</Link>
-
-                {/* Authentication Links */}
-                {user ? (
-                    <>
-                        <span style={{ margin: "10px" }}>Hello, {user.username}!</span>
-                        <button onClick={handleLogout} style={{ margin: "10px" }}>Logout</button>
-                    </>
-                ) : (
-                    <>
-                        <Link to="/login" style={{ margin: "10px" }}>Login</Link>
-                        <Link to="/signup" style={{ margin: "10px" }}>Sign Up</Link>
-                    </>
-                )}
-            </nav>
+            {/* 🔹 Use the Navbar globally */}
+            <Navbar user={user} handleLogout={handleLogout} />
 
             {/* Routes */}
             <Routes>
