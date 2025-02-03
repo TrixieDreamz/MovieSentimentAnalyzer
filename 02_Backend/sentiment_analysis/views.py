@@ -57,13 +57,13 @@ def fetch_movie_data(request, movie_title):
     
 @csrf_exempt
 def search_movies(request):
-    """Search for movies using an external API."""
+    """Search for movies using an external API and return formatted results."""
     query = request.GET.get('query', '')
 
     if not query:
         return JsonResponse({"error": "Query parameter is required"}, status=400)
 
-    # Make a request to The Movie Database (TMDb) API
+    # Fetch movies from TMDb API
     base_url = "https://api.themoviedb.org/3/search/movie"
     params = {
         "api_key": TMDb_API_KEY,
@@ -74,8 +74,22 @@ def search_movies(request):
 
     if response.status_code == 200:
         data = response.json()
-        return JsonResponse(data, safe=False)
+        formatted_results = []
+
+        for movie in data.get("results", []):
+            formatted_results.append({
+                "id": movie.get("id"),
+                "title": movie.get("title"),
+                "release_year": movie.get("release_date", "")[:4],  # Extract only the year
+                "avg_rating": movie.get("vote_average", "N/A"),
+                "genre": ", ".join([str(genre_id) for genre_id in movie.get("genre_ids", [])]),  # Convert genre IDs to string
+                "poster_url": f"https://image.tmdb.org/t/p/w500{movie.get('poster_path')}" if movie.get("poster_path") else None,
+            })
+
+        return JsonResponse({"results": formatted_results}, safe=False)
     else:
         return JsonResponse({"error": "Failed to fetch data"}, status=response.status_code)
+
+
 
 
