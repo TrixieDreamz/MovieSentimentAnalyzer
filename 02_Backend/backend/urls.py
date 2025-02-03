@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/topics/http/urls/
 from django.contrib import admin  # Import Django's built-in admin module
 from django.urls import path, include  # Import path (for defining routes) and include (for modular URL configurations)
 
+
 urlpatterns = [
     # 1️⃣ Admin Panel Route
     # This allows access to Django's built-in admin panel at "/admin/"

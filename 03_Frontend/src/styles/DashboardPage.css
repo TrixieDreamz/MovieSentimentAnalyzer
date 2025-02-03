@@ -1,0 +1,70 @@
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    background-color: #121212;
+    color: white;
+}
+
+/* Sidebar - User Actions */
+.dashboard-sidebar {
+    margin-top: 40px;
+    width: 25%;
+    background: #1c1c1c;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard-sidebar h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.dashboard-sidebar p {
+    font-size: 1rem;
+    color: #bbb;
+    margin-bottom: 15px;
+}
+
+/* Sidebar Action List */
+.dashboard-list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.dashboard-list li {
+    background: #b71c1c;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.dashboard-list li:hover {
+    background: #8e0000;
+}
+
+/* Main Content Area */
+.dashboard-content {
+    width: 75%;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Placeholder for Future Charts */
+.chart-placeholder {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 50px;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #bbb;
+}

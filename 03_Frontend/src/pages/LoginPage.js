@@ -11,21 +11,20 @@ const LoginPage = ({ setUser }) => {
     const handleLogin = async (event) => {
         event.preventDefault();
         console.log("🚀 Login button clicked!");
-
+    
         try {
             const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
-
+    
             const data = await response.json();
-            console.log("✅ Response:", data);
-
+    
             if (response.ok) {
                 localStorage.setItem("user", JSON.stringify(data));  // 🔹 Store user persistently
                 setUser(data);  // 🔹 Update state
-                navigate("/");  // 🔹 Redirect to home page
+                navigate("/dashboard");  // 🔹 Redirect to Dashboard instead of Home
             } else {
                 alert("Error: " + data.error);
             }
@@ -33,6 +32,7 @@ const LoginPage = ({ setUser }) => {
             console.error("⚠️ Login error:", error);
         }
     };
+    
 
     return (
         <div className="login-container">

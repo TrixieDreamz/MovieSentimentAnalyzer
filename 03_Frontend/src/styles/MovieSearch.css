@@ -1,0 +1,51 @@
+.movie-search-container {
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+    background: #1c1c1c;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.movie-search-container input {
+    width: 60%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.movie-search-container button {
+    padding: 10px 15px;
+    background: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.movie-search-container button:hover {
+    background: #b71c1c;
+}
+
+.movie-result {
+    margin-top: 20px;
+    padding: 15px;
+    background: #2c2c2c;
+    border-radius: 8px;
+}
+
+.movie-result img {
+    width: 150px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.error-message {
+    color: red;
+    font-size: 1rem;
+    margin-top: 10px;
+}

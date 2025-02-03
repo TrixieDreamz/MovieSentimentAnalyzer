@@ -15,7 +15,7 @@ const Navbar = ({ user, handleLogout }) => {
             <div className="navbar-links">
                 {user ? (
                     <>
-                        <span className="navbar-user">Welcome, {user.username}!</span>
+                        
                         <button onClick={handleLogout} className="navbar-button">Logout</button>
                     </>
                 ) : (

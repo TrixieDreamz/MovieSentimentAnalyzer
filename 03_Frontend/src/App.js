@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import DashboardPage from "./pages/DashboardPage";
 
 const App = () => {
     const [user, setUser] = useState(() => {
@@ -53,10 +54,11 @@ const App = () => {
             
             {/* Routes */}
             <Routes>
-                <Route path="/" element={<HomePage user={user} />} />  
+                <Route path="/" element={<HomePage user={user} />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/login" element={<LoginPage setUser={setUser} />} />
                 <Route path="/signup" element={<SignupPage setUser={setUser} />} />
+                <Route path="/dashboard" element={<DashboardPage user={user} />} />  {/* New Dashboard Route */}
             </Routes>
         </Router>
     );

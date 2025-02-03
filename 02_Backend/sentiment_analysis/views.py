@@ -4,6 +4,10 @@ from .serializers import MovieSerializer, ReviewSerializer, SentimentAnalysisSer
 import requests
 from django.http import JsonResponse
 from ApiKey import TMDb_API_KEY
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+
 
 
 # 🎬 Movie API Views
@@ -48,6 +52,29 @@ def fetch_movie_data(request, movie_title):
             return JsonResponse(first_movie, safe=False)
         else:
             return JsonResponse({"error": "No movie found"}, status=404)
+    else:
+        return JsonResponse({"error": "Failed to fetch data"}, status=response.status_code)
+    
+@csrf_exempt
+def search_movies(request):
+    """Search for movies using an external API."""
+    query = request.GET.get('query', '')
+
+    if not query:
+        return JsonResponse({"error": "Query parameter is required"}, status=400)
+
+    # Make a request to The Movie Database (TMDb) API
+    base_url = "https://api.themoviedb.org/3/search/movie"
+    params = {
+        "api_key": TMDb_API_KEY,
+        "query": query,
+    }
+
+    response = requests.get(base_url, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        return JsonResponse(data, safe=False)
     else:
         return JsonResponse({"error": "Failed to fetch data"}, status=response.status_code)
 
