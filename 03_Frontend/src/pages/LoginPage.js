@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/LoginPage.css"; // Import CSS for styling
+import logo from "../assets/logo.png"; // Import logo
 
 const LoginPage = ({ setUser }) => {
     const [email, setEmail] = useState("");
@@ -33,25 +35,36 @@ const LoginPage = ({ setUser }) => {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <button type="submit">Login</button>
-            </form>
+        <div className="login-container">
+            {/* Logo */}
+            <img src={logo} alt="CinePulse Logo" className="login-logo" />
+
+            {/* Login Form */}
+            <div className="login-box">
+                <h2>Login to CinePulse</h2>
+                <form onSubmit={handleLogin}>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <button type="submit" className="login-button">Login</button>
+                </form>
+                
+                {/* Forgot Password */}
+                <p className="forgot-password" onClick={() => alert("Forgot password flow not implemented yet!")}>
+                    Forgot Password?
+                </p>
+            </div>
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./sections/Navbar"; // Import the Navbar component
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
@@ -49,18 +49,25 @@ const App = () => {
 
     return (
         <Router>
-            {/* 🔹 Use the Navbar globally */}
-            <Navbar user={user} handleLogout={handleLogout} />
-
+            <ConditionalNavbar user={user} handleLogout={handleLogout} /> {/* 👈 Conditionally Render Navbar */}
+            
             {/* Routes */}
             <Routes>
-                <Route path="/" element={<HomePage user={user} />} />  {/* 🔹 Pass `user` to HomePage */}
+                <Route path="/" element={<HomePage user={user} />} />  
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/login" element={<LoginPage setUser={setUser} />} />
                 <Route path="/signup" element={<SignupPage setUser={setUser} />} />
             </Routes>
         </Router>
     );
+};
+
+// **🔹 Step 2: Create Conditional Navbar Rendering**
+const ConditionalNavbar = ({ user, handleLogout }) => {
+    const location = useLocation();
+    const hideNavbar = location.pathname === "/login" || location.pathname === "/signup";
+
+    return hideNavbar ? null : <Navbar user={user} handleLogout={handleLogout} />;
 };
 
 export default App;
