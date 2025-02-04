@@ -34,3 +34,15 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.movie.title} - {self.author}"
+    
+class TrackedMovie(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tracked_movies")
+    movie_id = models.CharField(max_length=100)  # Unique TMDb movie ID
+    title = models.CharField(max_length=255)
+    release_year = models.CharField(max_length=4, blank=True, null=True)
+    avg_rating = models.FloatField(blank=True, null=True)
+    genre = models.CharField(max_length=255, blank=True, null=True)
+    poster_url = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.title}"

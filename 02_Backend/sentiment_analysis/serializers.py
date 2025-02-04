@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie, Review, SentimentAnalysis
+from .models import Movie, Review, SentimentAnalysis, TrackedMovie
 
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,4 +14,9 @@ class ReviewSerializer(serializers.ModelSerializer):
 class SentimentAnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = SentimentAnalysis
+        fields = '__all__'
+
+class TrackedMovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TrackedMovie
         fields = '__all__'

@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     MovieDetailView,
     ReviewListCreateView, ReviewDetailView,
-    SentimentAnalysisListCreateView, SentimentAnalysisDetailView, fetch_movie_data, search_movies
+    SentimentAnalysisListCreateView, SentimentAnalysisDetailView, fetch_movie_data, search_movies, get_tracked_movies, add_tracked_movie, remove_tracked_movie
 )
 
 urlpatterns = [
@@ -21,4 +21,7 @@ urlpatterns = [
     path('external/movies/<str:movie_title>/', fetch_movie_data, name='fetch-movie-data'),
     path('movies/search/', search_movies, name='search-movies'),  # Add this line
     path('external/movies/<str:movie_title>/', fetch_movie_data, name='fetch-movie-data'),
+    path('movies/tracked/', get_tracked_movies, name='get-tracked-movies'),
+    path('movies/tracked/add/', add_tracked_movie, name='add-tracked-movie'),
+    path('movies/tracked/remove/<str:movie_id>/', remove_tracked_movie, name='remove-tracked-movie'),
 ]
